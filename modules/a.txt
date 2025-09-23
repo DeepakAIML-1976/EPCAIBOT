@@ -1,0 +1,860 @@
+# modules/datasheet_handler.py
+import streamlit as st
+import os
+from modules import embedding_handler as eh
+from modules import parser
+
+DATA_DIR = "data/datasheets"
+os.makedirs(DATA_DIR, exist_ok=True)
+
+def save_and_index_file(uploaded_file, model_choice="openai"):
+    bytes_data = uploaded_file.read()
+    text = parser.extract_text_from_bytes(bytes_data, uploaded_file.name)
+    if text and text.strip():
+        eh.index_document(text, source=f"Datasheet:{uploaded_file.name}", model_choice=model_choice, namespace="datasheets")
+    # Save raw file
+    with open(os.path.join(DATA_DIR, uploaded_file.name), "wb") as f:
+        f.write(bytes_data)
+    return text
+
+def datasheet_ui():
+    st.header("📑 Datasheet Upload & Indexing")
+    model_choice = st.selectbox("Select embedding model", ["openai", "scibert", "matscibert"])
+    uploaded_files = st.file_uploader("Upload Datasheets (PDF, DOCX, XLSX, CSV, TXT)", 
+                                      type=["pdf","docx","xlsx","xls","csv","txt"], accept_multiple_files=True)
+    if uploaded_files:
+        for f in uploaded_files:
+            with st.spinner(f"Processing {f.name} ..."):
+                text = save_and_index_file(f, model_choice=model_choice)
+                if text:
+                    st.success(f"Indexed datasheet: {f.name}")
+                    st.text_area(f"Preview: {f.name}", text[:2000], height=200)
+                else:
+                    st.warning(f"Could not extract text from {f.name}.")
+# modules/db.py
+import sqlite3
+import os
+from datetime import datetime
+from typing import List, Dict, Any
+
+DB_PATH = os.path.join("data", "epc_ai.db")
+os.makedirs("data", exist_ok=True)
+
+def get_conn():
+    conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def init_db():
+    conn = get_conn()
+    cur = conn.cursor()
+    # documents: text blobs (could be truncated if you want), faiss_pos aligns with index insertion order
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS documents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        source TEXT,
+        namespace TEXT,
+        model TEXT,
+        text TEXT,
+        faiss_pos INTEGER,
+        created_at TEXT
+    );
+    """)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS tqs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT,
+        vendor_email TEXT,
+        status TEXT,
+        created_at TEXT
+    );
+    """)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS tbes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT,
+        recipient_email TEXT,
+        status TEXT,
+        created_at TEXT
+    );
+    """)
+    conn.commit()
+    conn.close()
+
+def insert_document(source: str, namespace: str, model: str, text: str, faiss_pos: int):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO documents (source, namespace, model, text, faiss_pos, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (source, namespace, model, text, faiss_pos, datetime.utcnow().isoformat()))
+    conn.commit()
+    conn.close()
+
+def get_documents(model: str = None, namespace: str = None) -> List[Dict[str, Any]]:
+    conn = get_conn()
+    cur = conn.cursor()
+    q = "SELECT * FROM documents"
+    params = []
+    clauses = []
+    if model:
+        clauses.append("model = ?")
+        params.append(model)
+    if namespace:
+        clauses.append("namespace = ?")
+        params.append(namespace)
+    if clauses:
+        q += " WHERE " + " AND ".join(clauses)
+    q += " ORDER BY faiss_pos ASC"
+    cur.execute(q, params)
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def insert_tq(text: str, vendor_email: str, status: str = "approved"):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO tqs (text, vendor_email, status, created_at) VALUES (?, ?, ?, ?)
+    """, (text, vendor_email, status, datetime.utcnow().isoformat()))
+    conn.commit()
+    conn.close()
+
+def get_tqs() -> List[Dict[str, Any]]:
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM tqs ORDER BY created_at DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+def insert_tbe(text: str, recipient_email: str, status: str = "approved"):
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO tbes (text, recipient_email, status, created_at) VALUES (?, ?, ?, ?)
+    """, (text, recipient_email, status, datetime.utcnow().isoformat()))
+    conn.commit()
+    conn.close()
+
+def get_tbes() -> List[Dict[str, Any]]:
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM tbes ORDER BY created_at DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+# modules/email_handler.py
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+from dotenv import load_dotenv
+import streamlit as st
+
+load_dotenv()
+
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+SMTP_USER = os.getenv("SMTP_USER") or os.getenv("EMAIL_SENDER")
+SMTP_PASS = os.getenv("SMTP_PASS") or os.getenv("EMAIL_PASSWORD")
+EMAIL_FROM = os.getenv("EMAIL_FROM") or SMTP_USER
+
+def send_email(subject: str, body: str, to_email: str) -> bool:
+    if not all([SMTP_USER, SMTP_PASS, EMAIL_FROM]):
+        st.error("Email configuration missing. Set SMTP_USER, SMTP_PASS, EMAIL_FROM in .env")
+        return False
+    try:
+        msg = MIMEMultipart()
+        msg["From"] = EMAIL_FROM
+        msg["To"] = to_email
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain"))
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(EMAIL_FROM, [to_email], msg.as_string())
+        return True
+    except Exception as e:
+        st.error(f"Email send failed: {e}")
+        return False
+# modules/embedding_handler.py
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+import numpy as np
+import faiss
+import threading
+from typing import List, Dict, Any, Optional
+
+from openai import OpenAI
+from sentence_transformers import SentenceTransformer
+
+from modules import db  # our sqlite helper
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
+MODEL_CONFIGS = {
+    "openai": {"dim": 1536, "hf_name": None},
+    "scibert": {"dim": 768, "hf_name": "allenai/scibert_scivocab_uncased"},
+    "matscibert": {"dim": 768, "hf_name": "m3rg-iitd/matscibert"},
+}
+
+# indexes[model][namespace] = {"index": faiss.IndexFlatL2, "docs": [meta dicts]}
+_indexes_lock = threading.Lock()
+indexes: Dict[str, Dict[str, Dict[str, Any]]] = {}
+_st_models: Dict[str, SentenceTransformer] = {}
+
+INDEX_DIR = os.path.join("data", "indexes")
+os.makedirs(INDEX_DIR, exist_ok=True)
+
+def _ensure_namespace_index(model_name: str, namespace: str = "general"):
+    with _indexes_lock:
+        if model_name not in indexes:
+            indexes[model_name] = {}
+        if namespace not in indexes[model_name]:
+            dim = MODEL_CONFIGS[model_name]["dim"]
+            idx = faiss.IndexFlatL2(dim)
+            indexes[model_name][namespace] = {"index": idx, "docs": []}
+    return indexes[model_name][namespace]
+
+def _get_hf_model(model_name: str) -> SentenceTransformer:
+    cfg = MODEL_CONFIGS[model_name]
+    hf = cfg["hf_name"]
+    if hf not in _st_models:
+        _st_models[hf] = SentenceTransformer(hf)
+    return _st_models[hf]
+
+def get_embedding(text: str, model_choice: str = "openai") -> np.ndarray:
+    m = model_choice.lower()
+    if m not in MODEL_CONFIGS:
+        raise ValueError(f"Unknown model_choice {model_choice}")
+    if m == "openai":
+        if not openai_client:
+            raise RuntimeError("OpenAI not configured (OPENAI_API_KEY missing).")
+        resp = openai_client.embeddings.create(model="text-embedding-3-small", input=text)
+        return np.array(resp.data[0].embedding, dtype="float32")
+    else:
+        st_model = _get_hf_model(m)
+        vec = st_model.encode(text, convert_to_numpy=True)
+        return np.array(vec, dtype="float32")
+
+def _index_path(model: str, namespace: str) -> str:
+    safe_model = model.replace("/", "_")
+    safe_ns = namespace.replace("/", "_")
+    return os.path.join(INDEX_DIR, f"{safe_model}__{safe_ns}.index")
+
+def save_index_to_disk(model: str, namespace: str):
+    entry = indexes.get(model, {}).get(namespace)
+    if not entry:
+        return False
+    idx = entry["index"]
+    path = _index_path(model, namespace)
+    faiss.write_index(idx, path)
+    return True
+
+def load_index_from_disk(model: str, namespace: str) -> bool:
+    path = _index_path(model, namespace)
+    if not os.path.exists(path):
+        return False
+    idx = faiss.read_index(path)
+    # load metadata from DB for this model/namespace
+    docs = db.get_documents(model=model, namespace=namespace)
+    with _indexes_lock:
+        if model not in indexes:
+            indexes[model] = {}
+        indexes[model][namespace] = {"index": idx, "docs": docs}
+    return True
+
+def persist_all_indexes():
+    with _indexes_lock:
+        for model, nsmap in indexes.items():
+            for ns in nsmap.keys():
+                save_index_to_disk(model, ns)
+
+def load_all_indexes_from_db():
+    # For every distinct (model, namespace) present in DB, try to load its index file and metadata
+    docs = db.get_documents()
+    seen = set()
+    for d in docs:
+        key = (d["model"], d["namespace"])
+        if key in seen:
+            continue
+        seen.add(key)
+        model, namespace = key
+        load_index_from_disk(model, namespace)
+
+def index_document(text: str, source: str, model_choice: str = "openai", namespace: Optional[str] = "general"):
+    model = model_choice.lower()
+    ns_entry = _ensure_namespace_index(model, namespace)
+    idx = ns_entry["index"]
+    n_before = idx.ntotal
+    emb = get_embedding(text, model_choice=model)
+    emb = emb.reshape(1, -1).astype("float32")
+    idx.add(emb)
+    # store meta in memory
+    ns_entry["docs"].append({"source": source, "namespace": namespace, "model": model, "text": text})
+    # write to DB with faiss_pos = n_before
+    db.insert_document(source=source, namespace=namespace, model=model, text=text, faiss_pos=n_before)
+    # persist index file to disk (so nothing lost)
+    save_index_to_disk(model, namespace)
+
+def search(query: str, top_k: int = 5, model_choice: str = "openai", namespace: Optional[str] = None) -> List[Dict[str, Any]]:
+    model = model_choice.lower()
+    model_indexes = indexes.get(model, {})
+    if not model_indexes:
+        # nothing in memory; advise to load persisted indexes
+        return []
+    emb = get_embedding(query, model_choice=model).reshape(1, -1).astype("float32")
+    results = []
+    namespaces = [namespace] if namespace else list(model_indexes.keys())
+    for ns in namespaces:
+        entry = model_indexes.get(ns)
+        if not entry:
+            continue
+        idx = entry["index"]
+        if idx.ntotal == 0:
+            continue
+        D, I = idx.search(emb, top_k)
+        for dist, i in zip(D[0], I[0]):
+            if i < len(entry["docs"]):
+                meta = entry["docs"][i]
+                results.append({
+                    "source": meta.get("source"),
+                    "namespace": meta.get("namespace"),
+                    "text": meta.get("text"),
+                    "score": float(dist)
+                })
+    # sort by ascending distance
+    results.sort(key=lambda x: x["score"])
+    return results
+import os
+import pickle
+from sentence_transformers import SentenceTransformer, util
+import torch
+
+# Initialize SciBERT embeddings model
+EMBED_MODEL = "allenai/scibert_scivocab_uncased"
+model = SentenceTransformer(EMBED_MODEL)
+
+# Embedding storage
+EMBED_STORE_PATH = "data/embeddings.pkl"
+if os.path.exists(EMBED_STORE_PATH):
+    with open(EMBED_STORE_PATH, "rb") as f:
+        embedding_store = pickle.load(f)
+else:
+    embedding_store = []
+
+def add_embedding(text, metadata):
+    """Add a new embedding with associated metadata"""
+    embedding = model.encode(text, convert_to_tensor=True)
+    embedding_store.append({"text": text, "embedding": embedding, "metadata": metadata})
+    save_store()
+
+def save_store():
+    with open(EMBED_STORE_PATH, "wb") as f:
+        pickle.dump(embedding_store, f)
+
+def search_embedding(query, top_k=5):
+    """Return top_k similar texts to the query"""
+    if not embedding_store:
+        return []
+
+    query_embedding = model.encode(query, convert_to_tensor=True)
+    results = []
+    for item in embedding_store:
+        score = util.pytorch_cos_sim(query_embedding, item["embedding"]).item()
+        results.append({"text": item["text"], "metadata": item["metadata"], "score": score})
+
+    # Sort descending by similarity
+    results.sort(key=lambda x: x["score"], reverse=True)
+    return results[:top_k]
+# modules/normalizer.py
+
+# A minimal mapping table for common datasheet fields -> normalized keys
+ATTRIBUTE_MAPPING = {
+    "Equipment Name": "EQUIPMENT_NAME",
+    "Equipment": "EQUIPMENT_NAME",
+    "Model": "MODEL",
+    "Type": "MODEL",
+    "Material": "MATERIAL",
+    "Material Grade": "MATERIAL",
+    "Pressure Rating": "PRESSURE_RATING",
+    "Rating": "PRESSURE_RATING",
+    "Quantity": "QUANTITY",
+    "Qty": "QUANTITY",
+    "Delivery Date": "DELIVERY_DATE",
+    "Temperature": "TEMPERATURE",
+    "Power": "POWER",
+}
+
+
+def normalize_key(k: str) -> str:
+    if not k:
+        return k
+    # basic normalization
+    k_clean = k.strip().title()
+    if k_clean in ATTRIBUTE_MAPPING:
+        return ATTRIBUTE_MAPPING[k_clean]
+    # fallback: uppercase alphanumeric
+    return k.upper().replace(" ", "_")
+    
+    
+def normalize_kv_dict(kv: dict) -> dict:
+    """
+    Return normalized dict mapping to normalized keys.
+    """
+    out = {}
+    for k, v in kv.items():
+        nk = normalize_key(k)
+        out[nk] = v
+    return out
+# modules/parser.py
+import io
+import os
+from typing import Optional
+import re
+
+try:
+    import pdfplumber
+except Exception:
+    pdfplumber = None
+
+try:
+    import docx
+except Exception:
+    docx = None
+
+try:
+    import pandas as pd
+except Exception:
+    pd = None
+
+try:
+    from PyPDF2 import PdfReader
+except Exception:
+    PdfReader = None
+
+def _clean_text(t: str) -> str:
+    if not t:
+        return ""
+    t = t.replace("\x00", " ")
+    t = re.sub(r"\r\n", "\n", t)
+    t = re.sub(r"[ \t]+", " ", t)
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
+
+def extract_text_from_pdf_bytes(b: bytes) -> str:
+    text_parts = []
+    if pdfplumber:
+        try:
+            with pdfplumber.open(io.BytesIO(b)) as pdf:
+                for p in pdf.pages:
+                    t = p.extract_text()
+                    if t:
+                        text_parts.append(t)
+            return _clean_text("\n".join(text_parts))
+        except Exception:
+            pass
+    if PdfReader:
+        try:
+            reader = PdfReader(io.BytesIO(b))
+            for p in reader.pages:
+                try:
+                    t = p.extract_text()
+                except Exception:
+                    t = ""
+                if t:
+                    text_parts.append(t)
+            return _clean_text("\n".join(text_parts))
+        except Exception:
+            pass
+    return ""
+
+def extract_text_from_docx_bytes(b: bytes) -> str:
+    if docx:
+        try:
+            tmp = io.BytesIO(b)
+            document = docx.Document(tmp)
+            paragraphs = [p.text for p in document.paragraphs if p.text]
+            return _clean_text("\n".join(paragraphs))
+        except Exception:
+            return ""
+    return ""
+
+def extract_text_from_excel_bytes(b: bytes) -> str:
+    if pd:
+        try:
+            tmp = io.BytesIO(b)
+            xls = pd.read_excel(tmp, sheet_name=None, engine="openpyxl")
+            parts = []
+            for sheet_name, df in xls.items():
+                parts.append(f"--- Sheet: {sheet_name} ---")
+                for _, row in df.fillna("").iterrows():
+                    parts.append(" | ".join([str(x) for x in row.tolist()]))
+            return _clean_text("\n".join(parts))
+        except Exception:
+            return ""
+    return ""
+
+def extract_text_from_csv_bytes(b: bytes) -> str:
+    if pd:
+        try:
+            tmp = io.BytesIO(b)
+            df = pd.read_csv(tmp)
+            parts = []
+            for _, row in df.fillna("").iterrows():
+                parts.append(" | ".join([str(x) for x in row.tolist()]))
+            return _clean_text("\n".join(parts))
+        except Exception:
+            return ""
+    return ""
+
+def extract_text_from_bytes(b: bytes, filename: str) -> str:
+    ext = os.path.splitext(filename)[1].lower()
+    if ext == ".pdf":
+        return extract_text_from_pdf_bytes(b)
+    elif ext == ".docx":
+        return extract_text_from_docx_bytes(b)
+    elif ext in [".xlsx", ".xls"]:
+        return extract_text_from_excel_bytes(b)
+    elif ext == ".csv":
+        return extract_text_from_csv_bytes(b)
+    elif ext == ".txt":
+        try:
+            return _clean_text(b.decode("utf-8", errors="ignore"))
+        except Exception:
+            return ""
+    else:
+        return ""
+# modules/rfq_handler.py
+import streamlit as st
+import os
+from modules import embedding_handler as eh
+from modules import parser
+
+RFQ_DIR = "data/rfqs"
+os.makedirs(RFQ_DIR, exist_ok=True)
+
+def save_and_index_rfq(uploaded_file, model_choice="openai"):
+    bytes_data = uploaded_file.read()
+    text = parser.extract_text_from_bytes(bytes_data, uploaded_file.name)
+    if text and text.strip():
+        eh.index_document(text, source=f"RFQ:{uploaded_file.name}", model_choice=model_choice, namespace="rfqs")
+    with open(os.path.join(RFQ_DIR, uploaded_file.name), "wb") as f:
+        f.write(bytes_data)
+    return text
+
+def rfq_ui():
+    st.header("📄 RFQ Upload & Indexing")
+    model_choice = st.selectbox("Select embedding model", ["openai", "scibert", "matscibert"])
+    uploaded_files = st.file_uploader("Upload RFQs (PDF, DOCX, XLSX, CSV, TXT)", 
+                                      type=["pdf","docx","xlsx","xls","csv","txt"], accept_multiple_files=True)
+    if uploaded_files:
+        for f in uploaded_files:
+            with st.spinner(f"Processing {f.name} ..."):
+                text = save_and_index_rfq(f, model_choice=model_choice)
+                if text:
+                    st.success(f"Indexed RFQ: {f.name}")
+                    st.text_area(f"Preview: {f.name}", text[:2000], height=200)
+                else:
+                    st.warning(f"Could not extract text from {f.name}.")
+# modules/tbe_generator.py
+import streamlit as st
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+from modules import embedding_handler as eh
+from modules import db
+from modules.email_handler import send_email
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
+def generate_tbe_from_docs(model_choice: str = "openai") -> str:
+    ds = eh.search("requirements", top_k=5, model_choice=model_choice, namespace="datasheets")
+    vdocs = eh.search("vendor offer", top_k=5, model_choice=model_choice, namespace="vendor_docs")
+    rfqs = eh.search("rfq", top_k=3, model_choice=model_choice, namespace="rfqs")
+    ctx_parts = []
+    for r in ds: ctx_parts.append(f"[DATASHEET] {r['source']}\n{r['text'][:800]}")
+    for r in rfqs: ctx_parts.append(f"[RFQ] {r['source']}\n{r['text'][:800]}")
+    for r in vdocs: ctx_parts.append(f"[VENDOR] {r['source']}\n{r['text'][:800]}")
+    context = "\n\n".join(ctx_parts) if ctx_parts else "No indexed documents available."
+    prompt = f"""You are an EPC engineer preparing a Technical Bid Evaluation (TBE).
+Using the context below, produce a structured compliance matrix and recommendation summary.
+Context:
+{context}
+"""
+    if client:
+        try:
+            resp = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role":"system","content":"You are an EPC evaluator."},{"role":"user","content":prompt}],
+                temperature=0.2
+            )
+            return resp.choices[0].message.content.strip()
+        except Exception as e:
+            return f"(Fallback) OpenAI error: {e}\n\nContext:\n{context[:2000]}"
+    else:
+        return f"(Fallback) OpenAI not configured.\n\nContext:\n{context[:2000]}"
+
+def tbe_ui():
+    st.header("📊 Technical Bid Evaluation (TBE) Generator")
+    model_choice = st.selectbox("Select embedding model", ["openai", "scibert", "matscibert"])
+    if st.button("Generate TBE Report"):
+        with st.spinner("Generating TBE..."):
+            tbe_text = generate_tbe_from_docs(model_choice=model_choice)
+            st.subheader("Draft TBE Report")
+            st.write(tbe_text)
+            st.success("Draft TBE generated. Review and approve before sending.")
+            st.session_state["last_tbe"] = tbe_text
+
+    # archived TBEs
+    st.markdown("### Archived / Approved TBEs")
+    archived = db.get_tbes()
+    if archived:
+        for a in archived:
+            st.markdown(f"**{a['created_at']}** — {a['recipient_email'] or 'N/A'}")
+            st.write(a["text"])
+            st.markdown("---")
+    else:
+        st.info("No approved TBEs in archive.")
+
+    if st.session_state.get("last_tbe"):
+        with st.expander("Approve & Send last generated TBE"):
+            recipient = st.text_input("Recipient Email to send TBE", key="tbe_recipient")
+            if st.button("Approve & Send TBE"):
+                if recipient:
+                    sent = send_email("TBE Report from EPC", st.session_state["last_tbe"], recipient)
+                    if sent:
+                        db.insert_tbe(st.session_state["last_tbe"], recipient, status="approved")
+                        st.success("TBE approved, sent and archived.")
+                        st.session_state.pop("last_tbe", None)
+                else:
+                    st.error("Enter recipient email.")
+# modules/tq_generator.py
+import streamlit as st
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+from modules import embedding_handler as eh
+from modules import db
+from modules.email_handler import send_email
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
+
+def draft_tq_from_docs(model_choice: str = "openai") -> str:
+    ds = eh.search("requirements", top_k=3, model_choice=model_choice, namespace="datasheets")
+    vdocs = eh.search("vendor offer", top_k=3, model_choice=model_choice, namespace="vendor_docs")
+    rfqs = eh.search("rfq", top_k=2, model_choice=model_choice, namespace="rfqs")
+    ctx_parts = []
+    for r in ds: ctx_parts.append(f"[DATASHEET] {r['source']}\n{r['text'][:800]}")
+    for r in rfqs: ctx_parts.append(f"[RFQ] {r['source']}\n{r['text'][:800]}")
+    for r in vdocs: ctx_parts.append(f"[VENDOR] {r['source']}\n{r['text'][:800]}")
+    context = "\n\n".join(ctx_parts) if ctx_parts else "No indexed documents available."
+    prompt = f"""You are an EPC engineer drafting Technical Queries (TQs).
+Compare vendor offers against project datasheets and RFQs and identify ambiguities, deviations or missing data.
+Context:
+{context}
+
+Produce concise numbered TQ drafts."""
+    if client:
+        try:
+            resp = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role":"system","content":"You are an EPC engineer."},{"role":"user","content":prompt}],
+                temperature=0.2
+            )
+            return resp.choices[0].message.content.strip()
+        except Exception as e:
+            return f"(Fallback) OpenAI error: {e}\n\nContext:\n{context[:2000]}"
+    else:
+        return f"(Fallback) OpenAI not configured.\n\nContext:\n{context[:2000]}"
+
+def tq_ui():
+    st.header("📌 Technical Query (TQ) Generator")
+    model_choice = st.selectbox("Select embedding model", ["openai", "scibert", "matscibert"])
+    if st.button("Generate Draft TQs"):
+        with st.spinner("Generating TQs..."):
+            tq_text = draft_tq_from_docs(model_choice=model_choice)
+            st.subheader("Draft TQs")
+            st.write(tq_text)
+            st.success("Draft TQs generated. Review and approve before sending.")
+
+            # store temp in session
+            st.session_state["last_tq"] = tq_text
+
+    # Show saved archived TQs
+    st.markdown("### Archived / Approved TQs")
+    archived = db.get_tqs()
+    if archived:
+        for a in archived:
+            st.markdown(f"**{a['created_at']}** — {a['vendor_email'] or 'N/A'}")
+            st.write(a["text"])
+            st.markdown("---")
+    else:
+        st.info("No approved TQs in archive.")
+
+    # Approve & send
+    if st.session_state.get("last_tq"):
+        with st.expander("Approve & Send last generated TQs"):
+            vendor_email = st.text_input("Vendor Email to send", key="tq_vendor")
+            if st.button("Approve & Send"):
+                if vendor_email:
+                    sent = send_email("Technical Query (TQ) from EPC", st.session_state["last_tq"], vendor_email)
+                    if sent:
+                        db.insert_tq(st.session_state["last_tq"], vendor_email, status="approved")
+                        st.success("TQ approved, sent and archived.")
+                        st.session_state.pop("last_tq", None)
+                else:
+                    st.error("Enter vendor email.")
+# modules/training_handler.py
+import os
+import json
+import time
+from typing import List, Dict, Any, Optional
+
+import numpy as np
+import faiss
+from modules import embedding_handler as eh
+
+TRAIN_DIR = os.path.join("data", "training")
+os.makedirs(TRAIN_DIR, exist_ok=True)
+TRAIN_JSON = os.path.join(TRAIN_DIR, "training_data.json")
+INDEX_FILE = os.path.join(TRAIN_DIR, "training.index")
+META_FILE = os.path.join(TRAIN_DIR, "training_meta.json")
+
+_state = {"index": None, "meta": []}
+
+def _load_state():
+    if os.path.exists(INDEX_FILE):
+        try:
+            _state["index"] = faiss.read_index(INDEX_FILE)
+        except Exception:
+            _state["index"] = None
+    if os.path.exists(META_FILE):
+        try:
+            with open(META_FILE, "r", encoding="utf-8") as f:
+                _state["meta"] = json.load(f)
+        except Exception:
+            _state["meta"] = []
+
+def _save_state():
+    if _state["index"] is not None:
+        faiss.write_index(_state["index"], INDEX_FILE)
+    with open(META_FILE, "w", encoding="utf-8") as f:
+        json.dump(_state["meta"], f, indent=2)
+
+def _ensure_index(model_choice: str = "openai"):
+    if _state["index"] is None:
+        dim = 1536 if model_choice == "openai" else 768
+        _state["index"] = faiss.IndexFlatL2(dim)
+
+def save_approved_tqs(approved_tqs: List[Dict[str, Any]], model_choice: str = "openai") -> int:
+    if not approved_tqs:
+        return 0
+    _load_state()
+    _ensure_index(model_choice=model_choice)
+    added = 0
+    vecs = []
+    metas = []
+    for item in approved_tqs:
+        text = item.get("tq_text","").strip()
+        if not text:
+            continue
+        emb = eh.get_embedding(text, model_choice=model_choice)
+        vecs.append(emb.astype("float32"))
+        metas.append({
+            "datasheet": item.get("datasheet"),
+            "vendor": item.get("vendor"),
+            "vendor_doc": item.get("vendor_doc"),
+            "tq_text": text,
+            "ts": time.time()
+        })
+        added += 1
+    if not vecs:
+        return 0
+    mat = np.vstack(vecs).astype("float32")
+    _state["index"].add(mat)
+    _state["meta"].extend(metas)
+    _save_state()
+
+    # append raw training data
+    try:
+        existing = []
+        if os.path.exists(TRAIN_JSON):
+            with open(TRAIN_JSON, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        existing.extend(metas)
+        with open(TRAIN_JSON, "w", encoding="utf-8") as f:
+            json.dump(existing, f, indent=2)
+    except Exception:
+        pass
+    return added
+
+def search_training(query: str, top_k: int = 5, model_choice: str = "openai") -> List[Dict[str, Any]]:
+    _load_state()
+    if _state["index"] is None or _state["index"].ntotal == 0:
+        return []
+    qv = eh.get_embedding(query, model_choice=model_choice).reshape(1,-1).astype("float32")
+    D, I = _state["index"].search(qv, top_k)
+    out = []
+    for dist, i in zip(D[0], I[0]):
+        if 0 <= i < len(_state["meta"]):
+            meta = _state["meta"][i].copy()
+            meta["score"] = float(dist)
+            out.append(meta)
+    return out
+
+def get_training_stats():
+    _load_state()
+    n = _state["index"].ntotal if _state["index"] is not None else 0
+    return {"examples": len(_state["meta"]), "index_size": int(n)}
+
+def reset_training_store():
+    _load_state()
+    _state["index"] = None
+    _state["meta"] = []
+    for f in [TRAIN_JSON, INDEX_FILE, META_FILE]:
+        if os.path.exists(f):
+            try: os.remove(f)
+            except Exception: pass
+    os.makedirs(TRAIN_DIR, exist_ok=True)
+# modules/vendor_handler.py
+import streamlit as st
+import os
+from modules import embedding_handler as eh
+from modules import parser
+
+VENDOR_DIR = "data/vendor_docs"
+os.makedirs(VENDOR_DIR, exist_ok=True)
+
+def save_and_index_vendor(uploaded_file, model_choice="openai"):
+    bytes_data = uploaded_file.read()
+    text = parser.extract_text_from_bytes(bytes_data, uploaded_file.name)
+    if text and text.strip():
+        eh.index_document(text, source=f"Vendor:{uploaded_file.name}", model_choice=model_choice, namespace="vendor_docs")
+    with open(os.path.join(VENDOR_DIR, uploaded_file.name), "wb") as f:
+        f.write(bytes_data)
+    return text
+
+def vendor_ui():
+    st.header("📂 Vendor Document Upload & Indexing")
+    model_choice = st.selectbox("Select embedding model", ["openai", "scibert", "matscibert"])
+    uploaded_files = st.file_uploader("Upload Vendor Documents (PDF, DOCX, XLSX, CSV, TXT)", 
+                                      type=["pdf","docx","xlsx","xls","csv","txt"], accept_multiple_files=True)
+    if uploaded_files:
+        for f in uploaded_files:
+            with st.spinner(f"Processing {f.name} ..."):
+                text = save_and_index_vendor(f, model_choice=model_choice)
+                if text:
+                    st.success(f"Indexed vendor document: {f.name}")
+                    st.text_area(f"Preview: {f.name}", text[:2000], height=200)
+                else:
+                    st.warning(f"Could not extract text from {f.name}.")
+"" 

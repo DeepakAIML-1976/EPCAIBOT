@@ -1,0 +1,32 @@
+{
+  "datasheets": {
+    "VALVE1501.pdf": {
+      "vendors": [
+        "VENDOR OFFER1 VALVE1501.pdf",
+        "VENDOR OFFER2 VALVE1501.pdf"
+      ]
+    },
+    "VALVE1502.pdf": {
+      "vendors": [
+        "VENDOR OFFER1 VALVE1502.pdf",
+        "VENDOR OFFER2 VALVE1502.pdf",
+        "VENDOR OFFER1 VALVE1501.pdf",
+        "VENDOR OFFER2 VALVE1501.pdf"
+      ]
+    }
+  },
+  "vendors": {
+    "VENDOR OFFER1 VALVE1501.pdf": {
+      "name": "VENDOR OFFER1 VALVE1501"
+    },
+    "VENDOR OFFER2 VALVE1501.pdf": {
+      "name": "VENDOR OFFER2 VALVE1501"
+    },
+    "VENDOR OFFER1 VALVE1502.pdf": {
+      "name": "VENDOR OFFER1 VALVE1502"
+    },
+    "VENDOR OFFER2 VALVE1502.pdf": {
+      "name": "VENDOR OFFER2 VALVE1502"
+    }
+  }
+}

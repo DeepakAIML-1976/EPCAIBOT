@@ -1,0 +1,401 @@
+[
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Can you clarify the temperature limits of the valve, as the vendor offer specifies -29 to 425\u00b0C, while the datasheet requires 200 to 400\u00b0C?",
+    "ts": 1757186037.429493
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. The vendor offer lists the material group as \"CARBON STEEL HIGH TEMP,\" which deviates from the datasheet requirement of \"CRNI-STEEL (ASME).\" Please confirm the material compliance.",
+    "ts": 1757186037.9793372
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The fluid groups in the vendor offer (001, 010, 011, 013) do not match the specified fluid groups (006, 016) in the datasheet. Can you provide clarification on this discrepancy?",
+    "ts": 1757186038.5199142
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. The vendor offer states the body/bonnet material group as 1.2, while the datasheet specifies material groups 2.1 and 2.3. Please confirm compliance with the specified material requirements.",
+    "ts": 1757186038.9569552
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "7. The vendor offer mentions \"flexible wedge\" for sizes > NPS 2 to 16 and \"flexible or split wedge\" for sizes > NPS 16, while the datasheet specifies a split wedge design for sizes > NPS 24. Can you confirm the design type for larger sizes?",
+    "ts": 1757186039.4446516
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "8. The quality assurance section in the vendor offer references API for seat leakage rates, while the datasheet specifies a technical purchase specification. Can you clarify the applicable leakage rate standards?",
+    "ts": 1757186040.1064105
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "1. L&T VALVES has specified Body/Bonnet material as ASME B16.34, Material Group 2.2 and 2.4, while the datasheet requires Material Group 2.1 and 2.3; please clarify the deviation.",
+    "ts": 1757186040.7594166
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "2. The vendor's offer states the trim is analogous to API 600 No. 5, whereas the datasheet specifies API 600 No. 2 or 10; please confirm the trim specification.",
+    "ts": 1757186041.6821303
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "3. The vendor's design for valves greater than NPS 24 is described as \"analogous API 600,\" while the datasheet specifies a split wedge design; please clarify this design approach.",
+    "ts": 1757186042.3015542
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "4. The vendor's offer does not mention the requirement for a handgear according to RSP 1032; please confirm if this is included in the design.",
+    "ts": 1757186042.713548
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Can you clarify the temperature limits of the valve, as the vendor offer specifies -29 to 425\u00b0C, while the datasheet requires 200 to 400\u00b0C?",
+    "ts": 1757186239.5343196
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. The vendor offer lists the material group as \"CARBON STEEL HIGH TEMP,\" which deviates from the datasheet requirement of \"CRNI-STEEL (ASME).\" Please confirm the material compliance.",
+    "ts": 1757186239.9567046
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The fluid groups in the vendor offer (001, 010, 011, 013) do not match the specified fluid groups (006, 016) in the datasheet. Can you provide clarification on this discrepancy?",
+    "ts": 1757186240.3864336
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. The vendor offer states the body/bonnet material group as 1.2, while the datasheet specifies material groups 2.1 and 2.3. Please confirm compliance with the specified material requirements.",
+    "ts": 1757186240.8246832
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "7. The vendor offer mentions \"flexible wedge\" for sizes > NPS 2 to 16 and \"flexible or split wedge\" for sizes > NPS 16, while the datasheet specifies a split wedge design for sizes > NPS 24. Can you confirm the design type for larger sizes?",
+    "ts": 1757186241.4390364
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "8. The quality assurance section in the vendor offer references API for seat leakage rates, while the datasheet specifies a technical purchase specification. Can you clarify the applicable leakage rate standards?",
+    "ts": 1757186241.796259
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "1. L&T VALVES has specified Body/Bonnet material as ASME B16.34, Material Group 2.2 and 2.4, while the datasheet requires Material Group 2.1 and 2.3; please clarify the deviation.",
+    "ts": 1757186242.408197
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "2. The vendor's offer states the trim is analogous to API 600 No. 5, whereas the datasheet specifies API 600 No. 2 or 10; please confirm the trim specification.",
+    "ts": 1757186242.823065
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "3. The vendor's design for valves greater than NPS 24 is described as \"analogous API 600,\" while the datasheet specifies a split wedge design; please clarify this design approach.",
+    "ts": 1757186243.4460566
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "4. The vendor's offer does not mention the requirement for a handgear according to RSP 1032; please confirm if this is included in the design.",
+    "ts": 1757186243.9954038
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1502",
+    "vendor_doc": "VENDOR OFFER1 VALVE1502.pdf",
+    "tq_text": "1. Can you confirm that the valve trim complies with API 600 No. 5 or 8 as specified in the datasheet?",
+    "ts": 1757186244.379471
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1502",
+    "vendor_doc": "VENDOR OFFER1 VALVE1502.pdf",
+    "tq_text": "2. Please clarify the end-to-end dimension for the valve as per ASME B16.10, as this detail is not explicitly provided in your offer.",
+    "ts": 1757186244.8446305
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1502",
+    "vendor_doc": "VENDOR OFFER1 VALVE1502.pdf",
+    "tq_text": "3. Does the offered valve design include a flexible wedge for sizes greater than NPS 16, as required by the datasheet?",
+    "ts": 1757186245.2244468
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1502",
+    "vendor_doc": "VENDOR OFFER1 VALVE1502.pdf",
+    "tq_text": "6. Are there any deviations from the specified material group for the body/bonnet (ASME B16.34, Material Group 1.1) in your offer?",
+    "ts": 1757186245.6850884
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1502",
+    "vendor_doc": "VENDOR OFFER1 VALVE1502.pdf",
+    "tq_text": "7. Can you confirm that the handgear complies with RSP 1032 as required in the datasheet?",
+    "ts": 1757186246.3755348
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1502",
+    "vendor_doc": "VENDOR OFFER2 VALVE1502.pdf",
+    "tq_text": "1. Please clarify the discrepancy in the trim specification; the datasheet specifies API 600 No. 5 or 8, while the vendor offer lists API 600 No. 10 (L&T VALVES).",
+    "ts": 1757186247.0621643
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1502",
+    "vendor_doc": "VENDOR OFFER2 VALVE1502.pdf",
+    "tq_text": "2. The vendor offer states a welded body/bonnet connection, whereas the datasheet specifies a flanged connection; please confirm compliance with the datasheet requirements (L&T VALVES).",
+    "ts": 1757186247.5029953
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1502",
+    "vendor_doc": "VENDOR OFFER2 VALVE1502.pdf",
+    "tq_text": "3. The end-to-end dimension is referenced as ASME B16.10 in both documents; however, please confirm that this dimension is applicable for all sizes as per the datasheet (L&T VALVES).",
+    "ts": 1757186248.3190775
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1502",
+    "vendor_doc": "VENDOR OFFER2 VALVE1502.pdf",
+    "tq_text": "6. Please clarify the design specification for the wedge type; the datasheet specifies flexible wedge for NPS <= 16 and flexible or split wedge for NPS > 16, while the vendor offer states \"des wedge\" without further detail (L&T VALVES).",
+    "ts": 1757186248.8014364
+  },
+  {
+    "datasheet": "VALVE1502.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1502",
+    "vendor_doc": "VENDOR OFFER2 VALVE1502.pdf",
+    "tq_text": "7. The vendor offer does not explicitly mention compliance with ASME B31.3; please confirm that the design adheres to this code (L&T VALVES).",
+    "ts": 1757186249.2344153
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Please confirm that the valve body and bonnet material complies with ASME B16.34, Material Group 1.2, as specified in the datasheet.",
+    "ts": 1757775688.8242564
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. Clarify if the bonnet gasket material of CrNi-Graphite meets the temperature and pressure requirements outlined in the datasheet.",
+    "ts": 1757775689.2095542
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The datasheet specifies a maximum temperature of 425\u00b0C; please confirm that the valve can operate reliably at this temperature.",
+    "ts": 1757775690.070005
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. Please provide the exact end-to-end dimension of the valve as per ASME B16.10 and API 602, as this is not specified in the vendor offer.",
+    "ts": 1757775690.4849658
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "5. Confirm that the bolts and nuts comply with ASTM A193 Gr.B7 and ASTM A194 Gr.4, as required by the datasheet.",
+    "ts": 1757775690.9279056
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Please confirm that the valve body and bonnet material complies with ASME B16.34, Material Group 1.2, as specified in the datasheet.",
+    "ts": 1757775871.5790405
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. Clarify if the bonnet gasket material of CrNi-Graphite meets the temperature and pressure requirements outlined in the datasheet.",
+    "ts": 1757775872.0119112
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The datasheet specifies a maximum temperature of 425\u00b0C; please confirm that the valve can operate reliably at this temperature.",
+    "ts": 1757775872.6961932
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. Please provide the exact end-to-end dimension of the valve as per ASME B16.10 and API 602, as this is not specified in the vendor offer.",
+    "ts": 1757775873.413902
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "5. Confirm that the bolts and nuts comply with ASTM A193 Gr.B7 and ASTM A194 Gr.4, as required by the datasheet.",
+    "ts": 1757775873.9399889
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "1. TQ1: The datasheet specifies a maximum pressure rating of 150 psi, while Vendor Offer2 indicates a rating of only 120 psi; please clarify the discrepancy.",
+    "ts": 1757775874.3383982
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "2. TQ2: The datasheet requires a temperature range of -20\u00b0F to 250\u00b0F, but Vendor Offer2 lists a range of -10\u00b0F to 200\u00b0F; can you confirm if this is acceptable?",
+    "ts": 1757775874.742324
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "3. TQ3: The datasheet mentions a specific material for the valve body (e.g., ASTM A216 WCB), whereas Vendor Offer2 states a different material (e.g., ASTM A105); please clarify the material compliance.",
+    "ts": 1757775875.1609788
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "4. TQ4: The datasheet requires a specific actuator type (e.g., pneumatic), but Vendor Offer2 offers an electric actuator; can you confirm if this change is permissible?",
+    "ts": 1757775875.5935295
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "5. TQ5: The datasheet specifies a maximum allowable leakage rate, but Vendor Offer2 does not provide this information; please provide the leakage rate for your valve.",
+    "ts": 1757775876.091415
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "6. TQ6: The datasheet includes a requirement for a specific coating (e.g., epoxy), while Vendor Offer2 does not mention any coating; can you clarify if a coating is applied?",
+    "ts": 1757775876.4920075
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Can you confirm that the valve body and bonnet materials meet the requirements of ASME B16.34, Material Group 1.2 as specified in the datasheet?",
+    "ts": 1758645937.5809314
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. Please clarify if the trim material complies with API 600 No. 2 as per the datasheet requirements.",
+    "ts": 1758645937.9300978
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The datasheet specifies a maximum temperature of 425\u00b0C; can you confirm that the valve is rated for this temperature?",
+    "ts": 1758645938.428922
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. The datasheet mentions flanged connections according to ASME B16.5 for NPS <= 24; can you confirm that the vendor offer adheres to this requirement?",
+    "ts": 1758645938.9124937
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "5. Please provide the end-to-end dimension details as per ASME B16.10 and API 602, as this information is missing in the vendor offer.",
+    "ts": 1758645939.349237
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "1. The datasheet specifies a maximum operating pressure of 150 psi, while Vendor Offer2 lists a maximum operating pressure of 140 psi; please clarify the reason for this deviation.",
+    "ts": 1758645939.8334987
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "2. The datasheet requires a temperature range of -20\u00b0F to 250\u00b0F, but Vendor Offer2 only provides a temperature range of -10\u00b0F to 200\u00b0F; can you confirm if this range is acceptable?",
+    "ts": 1758645940.4284856
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "3. The datasheet indicates a required body material of ASTM A216 WCB, whereas Vendor Offer2 offers ASTM A105; please clarify if this material substitution is permissible.",
+    "ts": 1758645940.926848
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "4. The datasheet specifies a minimum flow coefficient (Cv) of 50, while Vendor Offer2 does not provide a Cv value; could you provide the Cv value for the offered valve?",
+    "ts": 1758645941.4422565
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "5. The datasheet requires a specific actuator type, but Vendor Offer2 does not specify the actuator type included; please confirm the actuator type being offered.",
+    "ts": 1758645942.1657531
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER2 VALVE1501",
+    "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
+    "tq_text": "6. The datasheet mentions a requirement for a 3-inch flange connection, while Vendor Offer2 lists a 2.5-inch flange connection; please clarify this discrepancy.",
+    "ts": 1758645942.6663744
+  }
+]

@@ -1,0 +1,396 @@
+SQLite format 3   @        
+                                                             .vã
+   Ó «
+„Ó                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          År É3tabledocumentsdocumentsCREATE TABLE documents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        source TEXT,
+        namespace TEXT,
+        model TEXT,
+        text TEXT,
+        faiss_pos INTEGER,
+        created_at TEXT
+    )Åa É%tabletbestbesCREATE TABLE tbes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            query TEXT,
+            text TEXT,
+            vendor TEXT,
+            status TEXT,
+            created_at TEXT
+        )P++Ytablesqlite_sequencesqlite_sequenceCREATE TABLE sqlite_sequence(name,seq)Åd É/tabletqstqsCREATE TABLE tqs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            query TEXT,
+            text TEXT,
+            vendor_email TEXT,
+            status TEXT,
+            created_at TEXT
+        )   ˆ     ˚ˆ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ê6 )†
+3AUTO_GENERATED1. TQ-001: The vendor submission for VALVE1501 specifies a material group of "CARBON STEEL HIGH TEMP." whereas the datasheet specifies "CRNI-STEEL (ASME)". Please clarify the material group being offered.
+
+2. TQ-002: The temperature limits for VALVE1501 in the vendor submission are stated as -29 to 425¬∞C, which deviates from the datasheet limits of -200 to 400¬∞C. Please confirm the correct temperature limits.
+
+3. TQ-003: The vendor submission for VALVE1501 lists the body/bonnet material as "Material Group 1.2", while the datasheet specifies "Material Group 2.1 and 2.3". Please provide clarification on the material group.
+
+4. TQ-004: The vendor submission for VALVE1501 indicates a trim analogous to API 600 No. 2, while the datasheet specifies trim analogous to API 600 No. 10. Please confirm the correct trim specification.
+
+5. TQ-005: The vendor submission for VALVE1501 does not mention the extended bonnet length of L=300 as specified in the datasheet. Please confirm if this feature is included.
+
+6. TQ-006: The vendor submission for VALVE1502 states a trim of "API 600 No. 10", which is not listed in the datasheet. The datasheet specifies trim as "API 600 No. 5 or 8". Please clarify the trim being offered.
+
+7. TQ-007: The vendor submission for VALVE1502 lists the body/bonnet connection as "WELDED", while the datasheet specifies a "flanged" connection. Please confirm the correct connection type.
+
+8. TQ-008: The vendor submission for VALVE1501 does not specify the fluid groups being addressed, which are fluid group 006 and fluid group 016 as per the datasheet. Please confirm the fluid compatibility.
+
+9. TQ-009: The vendor submission for VALVE1501 does not include a statement regarding all parts contacting fluid being free of nonferrous metals, as specified in the datasheet. Please confirm compliance with this requirement.
+
+10. TQ-010: The vendor submission for VALVE1502 includes "API 602" in the end-to-end dimension section, which is not mentioned in the datasheet. Please clarify the relevance of API 602 in this context.approved2025-09-0      
+   Ë ˜Ë                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+documents tqs
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    «  «                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ê6 )†
+3AUTO_GENERATED1. TQ-001: The vendor submission for VALVE1501 specifies a material group of "CARBON STEEL HIGH TEMP." whereas the datasheet specifies "CRNI-STEEL (ASME)". Please clarify the material group being offered.
+
+2. TQ-002: The temperature limits for VALVE1501 in the vendor submission are stated as -29 to 425¬∞C, which deviates from the datasheet limits of -200 to 400¬∞C. Please confirm the correct temperature limits.
+
+3. TQ-003: The vendor submission for VALVE1501 lists the body/bonnet material as "Material Group 1.2", while the datasheet specifies "Material Group 2.1 and 2.3". Please provide clarification on the material group.
+
+4. TQ-004: The vendor submission for VALVE1501 indicates a trim analogous to API 600 No. 2, while the datasheet specifies trim analogous to API 600 No. 10. Please confirm the correct trim specification.
+
+5. TQ-005: The vendor submission for VALVE1501 does not mention the extended bonnet length of L=300 as specified in the datasheet. Please confirm if this feature is included.
+
+6. TQ-006: The vendor submission for VALVE1502 states a trim of "API 600 No. 10", which is not listed in the datasheet. The datasheet specifies trim as "API 600 No. 5 or 8". Please clarify the trim being offered.
+
+7. TQ-007: The vendor submission for VALVE1502 lists the body/bonnet connection as "WELDED", while the datasheet specifies a "flanged" connection. Please confirm the correct connection type.
+
+8. TQ-008: The vendor submission for VALVE1501 does not specify the fluid groups being addressed, which are fluid group 006 and fluid group 016 as per the datasheet. Please confirm the fluid compatibility.
+
+9. TQ-009: The vendor submission for VALVE1501 does not include a statement regarding all parts contacting fluid being free of nonferrous metals, as specified in the datasheet. Please confirm compliance with this requirement.
+
+10. TQ-010: The vendor submission for VALVE1502 includes "API 602" in the end-to-end dimension section, which is not mentioned in the datasheet. Please clarify the relevance of API 602 in this context.approved2025-09-07 11:31:56
+    w  w                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ë )°7
+3AUTO_GENERATED1. TQ-001: The vendor submission for VALVE1501 indicates a material group of "CARBON STEEL HIGH TEMP." whereas the datasheet specifies "CRNI-STEEL (ASME)." Please clarify the material group being proposed.
+
+2. TQ-002: The temperature limits for VALVE1501 in the vendor submission are stated as -29 to 425¬∞C, which deviates from the datasheet limits of -200 to 400¬∞C. Please confirm the correct temperature limits.
+
+3. TQ-003: The vendor submission for VALVE1501 lists the body/bonnet material as "Material Group 1.2," while the datasheet specifies "Material Group 2.1 and 2.3." Please provide clarification on the proposed material group.
+
+4. TQ-004: The end-to-end dimension for VALVE1501 in the vendor submission references "ASME B16.10 API 602," which is inconsistent with the datasheet that specifies "ASME B16.10." Please confirm the correct standard.
+
+5. TQ-005: The trim for VALVE1501 in the vendor submission is specified as "API 600 No. 2," while the datasheet indicates "Trim analogous API 600 No. 2 or 10." Please clarify if the proposed trim meets the datasheet requirements.
+
+6. TQ-006: The vendor submission for VALVE1502 indicates a trim of "API 600 No. 10," which is not listed in the datasheet that specifies "API 600 No. 5 or 8." Please confirm if the proposed trim is acceptable.
+
+7. TQ-007: The vendor submission for VALVE1502 states "End to End Dimension: ASME B16.10 API 602," which is inconsistent with the datasheet that specifies "ASME B16.10." Please clarify the correct standard.
+
+8. TQ-008: The vendor submission for VALVE1501 specifies a body/bonnet connection as "flanged," while the datasheet also mentions "Body/Bonnet connection flanged." Please confirm if this is in compliance with the datasheet.
+
+9. TQ-009: The vendor submission for VALVE1501 does not mention the extended bonnet length of L=300 as specified in the datasheet. Please confirm if this feature is included in the proposal.
+
+10. TQ-010: The vendor submission for VALVE1501 states "All parts contacting fluid free of nonferrous metals," which is not mentioned in the datasheet. Please clarify if this is a requirement for the valve.approved2025-09-07 11:51:50
+    \  \                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ë! )°7K3AUTO_GENERATED1. TQ-001: The vendor submission for VALVE1501 indicates a material group of "CARBON STEEL HIGH TEMP." whereas the datasheet specifies "CRNI-STEEL (ASME)." Please clarify the material group being proposed.
+
+2. TQ-002: The temperature limits for VALVE1501 in the vendor submission are stated as -29 to 425¬∞C, which deviates from the datasheet limits of -200 to 400¬∞C. Please confirm the correct temperature limits.
+
+3. TQ-003: The vendor submission for VALVE1501 lists the body/bonnet material as "Material Group 1.2," while the datasheet specifies "Material Group 2.1 and 2.3." Please provide clarification on the proposed material group.
+
+4. TQ-004: The end-to-end dimension for VALVE1501 in the vendor submission references "ASME B16.10 API 602," which is inconsistent with the datasheet that specifies "ASME B16.10." Please confirm the correct standard.
+
+5. TQ-005: The trim for VALVE1501 in the vendor submission is specified as "API 600 No. 2," while the datasheet indicates "Trim analogous API 600 No. 2 or 10." Please clarify if the proposed trim meets the datasheet requirements.
+
+6. TQ-006: The vendor submission for VALVE1502 indicates a trim of "API 600 No. 10," which is not listed in the datasheet that specifies "API 600 No. 5 or 8." Please confirm if the proposed trim is acceptable.
+
+7. TQ-007: The vendor submission for VALVE1502 states "End to End Dimension: ASME B16.10 API 602," which is inconsistent with the datasheet that specifies "ASME B16.10." Please clarify the correct standard.
+
+8. TQ-008: The vendor submission for VALVE1501 specifies a body/bonnet connection as "flanged," while the datasheet also mentions "Body/Bonnet connection flanged." Please confirm if this is in compliance with the datasheet.
+
+9. TQ-009: The vendor submission for VALVE1501 does not mention the extended bonnet length of L=300 as specified in the datasheet. Please confirm if this feature is included in the proposal.
+
+10. TQ-010: The vendor submission for VALVE1501 states "All parts contacting fluid free of nonferrous metals," which is not mentioned in the datasheet. Please clarify if this is a requirement for the valve.dpengineeringservices@gmail.comsent2025-09-07 11:52:35   ˚    
+˚                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 à|	 Q#êYAVendor:VENDOR OFFER1 VALVE1501.pdfvendor_docsopenaiVELAN VALVES Valve Specification Specification
+Gate Valve VALVE1501
+Project: DPES WEEkEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10 API 602
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.2
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 2
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection flanged
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. API
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:37.286830â 	 ;!êy	ADatasheet:VALVE1502.pdfdatasheetsopenaiValve Specification Specification
+Gate Valve VALVE1502
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.1
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 5 or 8
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection flanged
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:10.577278àl	 ;!êQADatasheet:VALVE1501.pdfdatasheetsopenaiValve Specification Specification
+Gate Valve VALVE1501
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -200 to 400¬∞C / ASME B16.5
+Material Group: CRNI-STEEL (ASME)
+Fluid Group: fluid group 006, fluid group 016
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet:ASME B16.34, Material Group 2.1 and 2.3
+Bonnet gasket:CrNi-graphite
+Bolts & Nuts:ASTM A193 Gr. B8-Cl2, ASTM A194 Gr.8A
+Trim analogous API 600 No.2 or 10
+Design:
+<= NPS 24 API 600, > NPS 24 analogous API 600
+Closure Part: NPS 3 to 16 flexible wedge, > NPS 16 flexible or split wedge
+Handgear: acc. to RSP 1032
+Body/Bonnet connection flanged
+Extended bonnet L=300
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:09.5   	
+   è 
+ë è                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 à|	 Q#êYAVendor:VENDOR OFFER1 VALVE1501.pdfvendor_docsopenaiVELAN VALVES Valve Specification Specification
+Gate Valve VALVE1501
+Project: DPES WEEkEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10 API 602
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.2
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 2
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection flanged
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. API
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:37.286830â 	 ;!êy	ADatasheet:VALVE1502.pdfdatasheetsopenaiValve Specification Specification
+Gate Valve VALVE1502
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.1
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 5 or 8
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection flanged
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:10.577278àl	 ;!êQADatasheet:VALVE1501.pdfdatasheetsopenaiValve Specification Specification
+Gate Valve VALVE1501
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -200 to 400¬∞C / ASME B16.5
+Material Group: CRNI-STEEL (ASME)
+Fluid Group: fluid group 006, fluid group 016
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet:ASME B16.34, Material Group 2.1 and 2.3
+Bonnet gasket:CrNi-graphite
+Bolts & Nuts:ASTM A193 Gr. B8-Cl2, ASTM A194 Gr.8A
+Trim analogous API 600 No.2 or 10
+Design:
+<= NPS 24 API 600, > NPS 24 analogous API 600
+Closure Part: NPS 3 to 16 flexible wedge, > NPS 16 flexible or split wedge
+Handgear: acc. to RSP 1032
+Body/Bonnet connection flanged
+Extended bonnet L=300
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:09.584622
+   ú 
+d ú                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              àr	 Q#êCAVendor:VENDOR OFFER2 VALVE1502.pdfvendor_docsopenaiL&T VALVES Valve Specification Specification
+Gate Valve VALVE1502
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10 API 602
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.1
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 10
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection WELDED
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:42.853222àP	 Q#èAVendor:VENDOR OFFER2 VALVE1501.pdfvendor_docsopenaiL&T VALVES Valve Specification Specification
+Gate Valve VALVE1501
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -200 to 400¬∞C / ASME B16.5
+Material Group: CRNI-STEEL (ASME)
+Fluid Group: fluid group 006, fluid group 016
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet:ASME B16.34, Material Group 2.2 and 2.4
+Bonnet gasket:CrNi-graphite
+Bolts & Nuts:ASTM A193 Gr. B8-Cl2, ASTM A194 Gr.8A
+Trim analogous API 600 No. 5
+Design:
+<= NPS 24 API 600, > NPS 24 analogous API 600
+Closure Part: NPS 3 to 16 flexible wedge, > NPS 16 flexible or split wedge
+Handgear: acc. to RSP 1032
+Body/Bonnet connection flanged
+Extended bonnet L=300
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:39.202305â	 Q#ë	AVendor:VENDOR OFFER1 VALVE1502.pdfvendor_docsopenaiVELAN VALVES Valve Specification Specification
+Gate Valve VALVE1502
+Project: DPES WEEKEND PROJECT
+Scope: ASME B31.3
+Limits: CL150 -29 to 425¬∞C / ASME B16.5
+Material Group: CARBON STEEL HIGH TEMP.
+Fluid Group: fluid group 001, fluid group 010, fluid group 011, fluid group
+013
+Connection:
+Flanged / Flanged
+Raised Face RF
+<= NPS 24, flanges acc. to ASME B16.5
+> NPS 24, flanges acc. to ASME B16.47 Series A
+End to End Dimension:
+ASME B16.10
+Material:
+Body/Bonnet: ASME B16.34, Material Group 1.1
+Bonnet Gasket: CrNi-Graphite
+Bolts & Nuts: ASTM A193 Gr.B7, ASTM A194 Gr.4
+Trim: API 600 No. 5 or 8
+Design:
+API 600 <= NPS 24, analogous API 600 > NPS 24
+Closure Part: <= NPS 2 solid wedge, > NPS 2 to 16 flexible wedge, > NPS16 flexible or split
+wedge
+Body/Bonnet connection flanged
+Handgear: acc. to RSP 1032
+All parts contacting fluid free of nonferrous metals
+Quality Assurance:
+Seat leakage rates acc. to technical purchase specification
+General:
+All specified data are minimum requirements
+All parts not specified are to be designed acc. to scope, service and fluids by manufacturers
+option2025-09-07T06:49:38.012610
