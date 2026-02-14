@@ -5,7 +5,9 @@ import re
 from modules import embedding_handler as eh
 from modules import parser
 
-VENDOR_DIR = "data/vendor_docs"
+# Robust absolute path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VENDOR_DIR = os.path.join(BASE_DIR, "data", "vendor_docs")
 os.makedirs(VENDOR_DIR, exist_ok=True)
 
 def guess_vendor_name(filename: str, text: str) -> str:
@@ -33,7 +35,11 @@ def save_and_index_vendor(uploaded_file, datasheet_target: str, model_choice="op
             }
         )
         eh.link_vendor_to_datasheet(datasheet_target, uploaded_file.name, vendor_name=vendor_name)
-    with open(os.path.join(VENDOR_DIR, uploaded_file.name), "wb") as f:
+    
+    # Ensure dir exists and use sanitized filename
+    os.makedirs(VENDOR_DIR, exist_ok=True)
+    safe_name = os.path.basename(uploaded_file.name)
+    with open(os.path.join(VENDOR_DIR, safe_name), "wb") as f:
         f.write(bytes_data)
     return text
 
