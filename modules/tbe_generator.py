@@ -99,8 +99,10 @@ def _parse_kv_pairs(text: str) -> List[Tuple[str, str]]:
             if len(parts) == 2:
                 kvs.append((parts[0], parts[1]))
                 continue
-            if len(parts) > 2 and len(parts[0].split()) <= 6:
-                kvs.append((parts[0], " | ".join(parts[1:])))
+            if len(parts) > 2:
+                # RELAXED: Allow longer keys (up to 10 words)
+                if len(parts[0].split()) <= 10:
+                    kvs.append((parts[0], " | ".join(parts[1:])))
                 continue
 
         # colon / dash
@@ -108,7 +110,8 @@ def _parse_kv_pairs(text: str) -> List[Tuple[str, str]]:
             if sep in ln:
                 left, right = ln.split(sep, 1)
                 left, right = left.strip(), right.strip()
-                if left and len(left.split()) <= 12:
+                # RELAXED: Allow longer keys (up to 20 words)
+                if left and len(left.split()) <= 20:
                     kvs.append((left, right if right else "Not specified"))
                     break
 
@@ -128,11 +131,38 @@ def _parse_kv_pairs(text: str) -> List[Tuple[str, str]]:
     i = 0
     while i < len(lines) - 1:
         head, val = lines[i], lines[i + 1]
-        if len(head.split()) <= 6 and len(val.split()) <= 30:
+        # RELAXED: Allow longer headers (up to 10 words)
+        if len(head.split()) <= 10 and len(val.split()) <= 50:
             out.append((head, val))
             i += 2
         else:
             i += 1
+    return out
+
+
+def _parse_regex_lines(text: str) -> List[Tuple[str, str]]:
+    """
+    Fallback: Extract lines that look like key-value pairs using regex.
+    """
+    if not text:
+        return []
+    
+    # Matches 'Key: Value' where Key is reasonably short (up to 15 words)
+    # and Value is not empty.
+    pattern = re.compile(r"^([^:\n]{3,80}):\s*(.+)$", re.MULTILINE)
+    matches = pattern.findall(text)
+    
+    out = []
+    seen = set()
+    for k, v in matches:
+        k = k.strip()
+        v = v.strip()
+        if not k or not v:
+            continue
+        nk = _normalize_key(k)
+        if nk and nk not in seen:
+            seen.add(nk)
+            out.append((k, v))
     return out
 
 
@@ -161,6 +191,7 @@ def _parse_whitespace_columns(text: str, min_cols: int = 2) -> List[List[str]]:
     for ln in text.splitlines():
         if not ln.strip():
             continue
+        # Improved regex: handle tabs OR 2+ spaces
         if re.search(r"\s{2,}|\t", ln):
             parts = re.split(r"\s{2,}|\t", ln.strip())
             parts = [p.strip() for p in parts if p is not None]
@@ -183,14 +214,22 @@ def _extract_vendor_maps(vendor_docs: List[str], model_choice: str) -> Tuple[Dic
     for vd in vendor_docs:
         vtext = _collect_text_for_source(vd, "vendor_docs", model_choice=model_choice)
 
-        # 1) Try KV first
+        # 1) Try KV pair parser
         pairs = _parse_kv_pairs(vtext)
 
-        # 2) If no KV, try pipe-table then whitespace-table, assume first col is key, second is value
+        # 2) Fallback: Regex-based line extraction if KV failed or returned few results
+        if len(pairs) < 5:
+            regex_pairs = _parse_regex_lines(vtext)
+            # Merge regex pairs, preferring existing ones
+            existing_keys = {_normalize_key(k) for k, v in pairs}
+            for k, v in regex_pairs:
+                if _normalize_key(k) not in existing_keys:
+                    pairs.append((k, v))
+
+        # 3) If still no KV, try pipe-table then whitespace-table
         if not pairs:
             pipe_rows = _parse_pipe_table(vtext)
             if pipe_rows:
-                # skip header if looks like header
                 start = 1 if pipe_rows and any(h.lower() in ("requirement", "parameter") for h in pipe_rows[0]) else 0
                 for r in pipe_rows[start:]:
                     if len(r) >= 2:

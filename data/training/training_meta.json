@@ -397,5 +397,75 @@
     "vendor_doc": "VENDOR OFFER2 VALVE1501.pdf",
     "tq_text": "6. The datasheet mentions a requirement for a 3-inch flange connection, while Vendor Offer2 lists a 2.5-inch flange connection; please clarify this discrepancy.",
     "ts": 1758645942.6663744
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "1. Please confirm that the valve body and bonnet material meets the specified ASME B16.34, Material Group 1.2 as per the datasheet.",
+    "ts": 1758970705.1699932
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. Clarify if the bonnet gasket material of CrNi-Graphite is compliant with the temperature range of -29 to 425\u00b0C as specified in the datasheet.",
+    "ts": 1758970705.6528707
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. The vendor offer does not specify the exact NPS (Nominal Pipe Size) range; please provide the NPS sizes available for the flanged connections.",
+    "ts": 1758970706.613177
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. Confirm if the trim material meets the requirements of API 600 No. 2 as stated in the datasheet.",
+    "ts": 1758970707.0276775
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "5. Please clarify if the end-to-end dimensions conform to ASME B16.10 and API 602 as required in the datasheet.",
+    "ts": 1758970707.3994777
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "2. TQ2: The datasheet requires a temperature range of -20\u00b0F to 250\u00b0F, but Vendor Offer1 lists a range of -10\u00b0F to 230\u00b0F; can you confirm if the offered range meets the project requirements?",
+    "ts": 1771093842.8045971
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "3. TQ3: The datasheet mentions a specific actuator type, but Vendor Offer1 does not specify the actuator type included; please provide details on the actuator.",
+    "ts": 1771093843.0787725
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "4. TQ4: The datasheet requires a body material of ASTM A216 WCB, while Vendor Offer1 lists ASTM A105; can you clarify if this is an acceptable deviation?",
+    "ts": 1771093843.294252
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "5. TQ5: The datasheet specifies a maximum allowable leakage rate, but Vendor Offer1 does not provide this information; please include the leakage rate for the offered valve.",
+    "ts": 1771093843.5408244
+  },
+  {
+    "datasheet": "VALVE1501.pdf",
+    "vendor": "VENDOR OFFER1 VALVE1501",
+    "vendor_doc": "VENDOR OFFER1 VALVE1501.pdf",
+    "tq_text": "6. TQ6: The datasheet requires a specific flange rating of 150 lb, while Vendor Offer1 offers a 300 lb flange rating; can you confirm if this is acceptable for our application?",
+    "ts": 1771093843.7702198
   }
 ]
