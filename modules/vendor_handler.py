@@ -11,12 +11,8 @@ VENDOR_DIR = os.path.join(BASE_DIR, "data", "vendor_docs")
 os.makedirs(VENDOR_DIR, exist_ok=True)
 
 def guess_vendor_name(filename: str, text: str) -> str:
-    base = os.path.splitext(os.path.basename(filename))[0]
-    m = re.split(r"[-_]", base, maxsplit=1)
-    if m and m[0]:
-        return m[0].strip()
-    m2 = re.search(r"\b([A-Z][A-Z][A-Z][A-Z][A-Z]+(?:\s+[A-Z]+)*)\b", text[:500])
-    return m2.group(1).title() if m2 else base
+    # Return full filename without extension as requested by user
+    return os.path.splitext(os.path.basename(filename))[0]
 
 def save_and_index_vendor(uploaded_file, datasheet_target: str, model_choice="openai"):
     bytes_data = uploaded_file.read()
