@@ -211,6 +211,19 @@ def _extract_vendor_maps(vendor_docs: List[str], model_choice: str) -> Tuple[Dic
     vendor_maps: Dict[str, Dict[str, str]] = {}
     vendor_names: Dict[str, str] = {}
 
+    seen_names = {}
+    final_names = {}
+    for vd in vendor_docs:
+        base_name = eh.get_vendor_display_name(vd)
+        if base_name in seen_names:
+            seen_names[base_name] += 1
+            unique_name = f"{base_name} ({seen_names[base_name]})"
+        else:
+            seen_names[base_name] = 1
+            unique_name = base_name
+        final_names[vd] = unique_name
+
+    # ... existing parsing logic ...
     for vd in vendor_docs:
         vtext = _collect_text_for_source(vd, "vendor_docs", model_choice=model_choice)
 
@@ -243,9 +256,8 @@ def _extract_vendor_maps(vendor_docs: List[str], model_choice: str) -> Tuple[Dic
                         pairs.append((r[0], r[1]))
 
         vendor_maps[vd] = {k: v for k, v in pairs}
-        vendor_names[vd] = eh.get_vendor_display_name(vd)
 
-    return vendor_maps, vendor_names
+    return vendor_maps, final_names
 
 
 def _build_from_requirements(
@@ -348,6 +360,61 @@ def _build_comparison_df(datasheet_name: str, vendor_docs: List[str], model_choi
         return _build_from_requirements(ds_kv_fallback, vendor_maps, vendor_names, vendor_docs)
 
     return pd.DataFrame(columns=["Requirement", "Datasheet", *[vendor_names.get(vd, vd) for vd in vendor_docs]])
+
+
+def get_comparison_diff(datasheet_name: str, vendor_doc: str, model_choice: str = "openai") -> str:
+    """
+    Generate a text summary of discrepancies between datasheet and a specific vendor.
+    Used for context in TQ generation.
+    """
+    # Build TBE for just this pair
+    df = _build_comparison_df(datasheet_name, [vendor_doc], model_choice=model_choice)
+    
+    if df.empty:
+        return "No structured comparison data found."
+
+    # Identify columns
+    # Df columns: Requirement, Datasheet, <VendorDisplayName>
+    # We need to find the vendor column name
+    cols = list(df.columns)
+    if "Requirement" not in cols or "Datasheet" not in cols:
+        return "Comparison structure invalid."
+    
+    # The vendor column is the one that is not Req or DS
+    vendor_col = next((c for c in cols if c not in ("Requirement", "Datasheet")), None)
+    if not vendor_col:
+        return "No vendor column found in comparison."
+
+    diffs = []
+    for idx, row in df.iterrows():
+        req = str(row["Requirement"]).strip()
+        ds_val = str(row["Datasheet"]).strip()
+        v_val = str(row[vendor_col]).strip()
+
+        # Simple logic: if values differ significantly and neither is trivial
+        # Normalize for comparison
+        ds_norm = _normalize_key(ds_val)
+        v_norm = _normalize_key(v_val)
+        
+        # Skip if both empty or same
+        if not ds_norm: 
+            continue
+        
+        # "Not specified" check
+        if v_val.lower() in ("not specified", "nan", ""):
+            diffs.append(f"- Requirement '{req}': Datasheet requires '{ds_val}', but Vendor value is missing/not specified.")
+            continue
+            
+        if ds_norm != v_norm:
+            # Check for simple containment to avoid noise (e.g. "50 mm" vs "50")
+            if ds_norm in v_norm or v_norm in ds_norm:
+                continue
+            diffs.append(f"- Requirement '{req}': Datasheet requires '{ds_val}', Vendor proposes '{v_val}'.")
+
+    if not diffs:
+        return "No significant deviations detected in structured parameters."
+    
+    return "Detected Deviations:\n" + "\n".join(diffs[:30]) # Limit to top 30 to avoid context overflow
 
 
 # =========================

@@ -22,14 +22,25 @@ def _gather_context_for_pair(datasheet_name: str, vendor_doc: str, model_choice:
         return "\n".join([c["text"][:600].replace("\n", " ") for c in chunks[:6]])
     return short(ds_hits), short(v_hits)
 
+from modules.tbe_generator import get_comparison_diff
+
 def _draft_tqs(datasheet_name: str, vendor_doc: str, model_choice: str = "openai") -> str:
     ds_ctx, v_ctx = _gather_context_for_pair(datasheet_name, vendor_doc, model_choice=model_choice)
+    
+    # Get structured diffs
+    diff_ctx = get_comparison_diff(datasheet_name, vendor_doc, model_choice=model_choice)
+
     prompt = f"""You are an EPC engineer drafting concise Technical Queries (TQs).
 Compare the datasheet requirements to the specific vendor offer (do not include other vendors).
+Refer to the 'DETECTED DEVIATIONS' below for specific discrepancies found in the data parameters.
 Identify ambiguities, missing data, deviations, or clarifications needed.
+
 Produce a numbered list of single-sentence TQs. Keep them precise and reference vendor by name if visible.
 
 DATASHEET: {datasheet_name}
+DETECTED DEVIATIONS (from TBE analysis):
+{diff_ctx}
+
 DATASHEET CONTEXT:
 {ds_ctx}
 
@@ -37,6 +48,7 @@ VENDOR OFFER: {vendor_doc}
 VENDOR CONTEXT:
 {v_ctx}
 """
+
     if client:
         try:
             resp = client.chat.completions.create(
